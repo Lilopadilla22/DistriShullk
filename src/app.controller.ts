@@ -17,8 +17,13 @@ export class AppController {
   }
 
   @Post('providers')
-  create(@Body() createProviderDto: CreateProviderDto) {
-    return 'Creado correctamente el proveedor';
+  async create(@Body() createProviderDto: CreateProviderDto) {
+    const { nombre, telefono, empresa } = createProviderDto;
+    const newProviderIdResult = await connection('proveedores').insert(
+      { nombre, telefono, empresa },
+      ['id'],
+    );
+    return `El proveedor con id ${newProviderIdResult[0]['id']} fue creado`;
   }
 
   @Get('goods')
